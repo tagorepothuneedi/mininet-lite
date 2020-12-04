@@ -41,7 +41,7 @@ from mn_wifi.propagationModels import PropagationModel as ppm
 #from mn_wifi.sixLoWPAN.link import LowPANLink
 #from mn_wifi.sixLoWPAN.util import ipAdd6
 
-#VERSION = "2.5"
+VERSION = "2.5"
 
 
 class Mininet_wifi(Mininet):
