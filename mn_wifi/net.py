@@ -47,7 +47,7 @@ VERSION = "2.5"
 class Mininet_wifi(Mininet):
 
     def __init__(self, accessPoint=OVSKernelAP, station=Station, car=Car,
-                  apsensor=OVSSensor, link=WirelessLink,
+                   link=WirelessLink,
                  ssid="new-ssid", mode="g", channel=1, freq=2.4, band=20,
                  wmediumd_mode=snr, roads=0, fading_cof=0, autoAssociation=True,
                  allAutoAssociation=True, autoSetPositions=False,
