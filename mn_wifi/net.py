@@ -32,7 +32,7 @@ from mn_wifi.energy import Energy
 #from mn_wifi.telemetry import parseData, telemetry as run_telemetry
 #from mn_wifi.mobility import Tracked as TrackedMob, model as MobModel, \
 #    Mobility as mob, ConfigMobility, ConfigMobLinks
-#from mn_wifi.plot import Plot2D, Plot3D, PlotGraph
+from mn_wifi.plot import Plot2D, Plot3D, PlotGraph
 from mn_wifi.module import Mac80211Hwsim
 from mn_wifi.propagationModels import PropagationModel as ppm
 #from mn_wifi.vanet import vanet
