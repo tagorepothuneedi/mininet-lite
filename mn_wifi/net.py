@@ -29,7 +29,7 @@ from mn_wifi.link import ConfigWLink, wmediumd, _4address, HostapdConfig, \
     _4addrAP, phyAP
 from mn_wifi.clean import Cleanup as CleanupWifi
 from mn_wifi.energy import Energy
-#from mn_wifi.telemetry import parseData, telemetry as run_telemetry
+from mn_wifi.telemetry import parseData#, telemetry as run_telemetry
 #from mn_wifi.mobility import Tracked as TrackedMob, model as MobModel, \
 #    Mobility as mob, ConfigMobility, ConfigMobLinks
 from mn_wifi.plot import Plot2D, Plot3D, PlotGraph
@@ -107,8 +107,8 @@ class Mininet_wifi(Mininet):
         self.isReplaying = False
         self.reverse = False
         self.alt_module = None
-        self.mob_check = False
-        self.mob_model = None
+        #self.mob_check = False
+        #self.mob_model = None
         self.ac_method = ac_method
         self.docker = docker
         self.container = container
@@ -124,14 +124,14 @@ class Mininet_wifi(Mininet):
         self.fading_cof = fading_cof
         self.noise_th = noise_th
         self.disable_tcp_checksum = disable_tcp_checksum
-        self.plot = Plot2D
+        #self.plot = Plot2D
         self.rec_rssi = rec_rssi
         self.roads = roads
         self.iot_module = iot_module
         self.ifbIntf = 0
-        self.mob_start_time = 0
-        self.mob_stop_time = 0
-        self.mob_rep = 1
+        #self.mob_start_time = 0
+        #self.mob_stop_time = 0
+        #self.mob_rep = 1
         self.seed = 1
         self.min_v = 1
         self.max_v = 10
@@ -345,10 +345,10 @@ class Mininet_wifi(Mininet):
                                 ipBaseNum=self.ipBaseNum,
                                 prefixLen=self.prefixLen) +
                           '/%s' % self.prefixLen,
-                    'ip6': ipAdd6(self.nextIP6,
-                                  ipBaseNum=self.ip6BaseNum,
-                                  prefixLen=self.prefixLen6) +
-                           '/%s' % self.prefixLen6,
+                    #'ip6': ipAdd6(self.nextIP6,
+                    #              ipBaseNum=self.ip6BaseNum,
+                    #              prefixLen=self.prefixLen6) +
+                    #       '/%s' % self.prefixLen6,
                     'channel': self.channel,
                     'freq': self.freq,
                     'band': self.band,
@@ -364,7 +364,7 @@ class Mininet_wifi(Mininet):
             defaults['cores'] = self.nextCore
             self.nextCore = (self.nextCore + 1) % self.numCores
         self.nextIP += 1
-        self.nextIP6 += 1
+       #self.nextIP6 += 1
         self.nextPos_sta += 2
 
         if not cls:
@@ -516,8 +516,8 @@ class Mininet_wifi(Mininet):
     def __iter__(self):
         "return iterator over node names"
         for node in chain(self.hosts, self.switches, self.controllers,
-                          self.stations, self.aps, 
-                          self.apsensors):
+                          self.stations, self.aps):
+                          #,self.apsensors):
             yield node.name
 
     def __len__(self):
@@ -591,17 +591,17 @@ class Mininet_wifi(Mininet):
         node2 = node2 if not isinstance(node2, string_types) else self[node2]
         cls = self.link if cls is None else cls
 
-        modes = [mesh, adhoc, ITSLink, WifiDirectLink, PhysicalWifiDirectLink]
+        modes = [mesh, adhoc]#, ITSLink, WifiDirectLink, PhysicalWifiDirectLink]
         if cls in modes:
             link = cls(node=node1, **params)
             self.links.append(link)
             return link
         elif cls == physicalMesh:
             cls(node=node1, **params)
-        elif cls == LowPANLink:
-            link = cls(node=node1, port=port1, **params)
-            self.links.append(link)
-            return link
+        #elif cls == LowPANLink:
+        #    link = cls(node=node1, port=port1, **params)
+        #    self.links.append(link)
+        #    return link
         elif cls == _4address:
             if self.wmediumd_mode == interference:
                 link = cls(node1, node2, port1, port2, **params)
@@ -629,7 +629,7 @@ class Mininet_wifi(Mininet):
 
     def configHosts(self):
         "Configure a set of nodes."
-        nodes = self.hosts + self.sensors
+        nodes = self.hosts #+ self.sensors
         for node in nodes:
             # info( host.name + ' ' )
             intf = node.defaultIntf()
@@ -711,11 +711,11 @@ class Mininet_wifi(Mininet):
                 self.plotGraph(max_x=(len(self.stations) * 100),
                                max_y=(len(self.stations) * 100),
                                max_z=max_z)
-        else:
-            if not mob.stations:
-                for node in self.stations:
-                    if hasattr(node, 'position'):
-                        mob.stations.append(node)
+       # else:
+       #     if not mob.stations:
+       #         for node in self.stations:
+       #             if hasattr(node, 'position'):
+        #                mob.stations.append(node)
 
         if self.config4addr or self.configWiFiDirect or self.wmediumd_mode == error_prob:
             self.init_wmediumd()
@@ -730,8 +730,8 @@ class Mininet_wifi(Mininet):
         if self.autoStaticArp:
             self.staticArp()
 
-        if not self.mob_check:
-            self.check_if_mob()
+        #if not self.mob_check:
+        #    self.check_if_mob()
 
         if self.allAutoAssociation:
             if self.autoAssociation and not self.configWiFiDirect:
@@ -800,7 +800,7 @@ class Mininet_wifi(Mininet):
         info('\n')
         info('*** Stopping switches/access points\n')
         stopped = {}
-        nodesL2 = self.switches + self.aps + self.apsensors
+        nodesL2 = self.switches + self.aps# + self.apsensors
         for swclass, switches in groupby(
                 sorted(nodesL2, key=lambda x: str(type(x))), type):
             switches = tuple(switches)
@@ -814,7 +814,7 @@ class Mininet_wifi(Mininet):
             switch.terminate()
         info('\n')
         info('*** Stopping nodes\n')
-        nodes = self.hosts + self.stations + self.sensors
+        nodes = self.hosts + self.stations #+ self.sensors
         for node in nodes:
             info(node.name + ' ')
             node.terminate()
@@ -1000,8 +1000,7 @@ class Mininet_wifi(Mininet):
         return result
 
     def get_mn_wifi_nodes(self):
-        return self.stations + self.aps + \
-             self.apsensors
+        return self.stations + self.aps# + \self.apsensors
 
     def get_distance(self, src, dst):
         """
@@ -1227,7 +1226,7 @@ class Mininet_wifi(Mininet):
     def start_wmediumd(self):
         wmediumd(wlinks=self.wlinks, fading_cof=self.fading_cof,
                  noise_th=self.noise_th, stations=self.stations,
-                 aps=self.aps, cars=self.cars, ppm=ppm)
+                 aps=self.aps, ppm=ppm)# cars=self.cars, ppm=ppm)
 
     def init_wmediumd(self):
         self.start_wmediumd()
@@ -1244,7 +1243,7 @@ class Mininet_wifi(Mininet):
             self.nameToNode[sensor.name] = sensor
 
     def config_range(self):
-        nodes = self.stations + self.cars + self.aps
+        nodes = self.stations  + self.aps
         for node in nodes:
             for intf in node.wintfs.values():
                 if int(intf.range) == 0:
@@ -1367,7 +1366,7 @@ class Mininet_wifi(Mininet):
             if sta in mob.stations:
                 mob.stations.remove(sta)
 
-        mob.aps = self.aps
+        #mob.aps = self.aps
         nodes = self.aps + self.stations 
         for node in nodes:
             if hasattr(node, 'position'):
@@ -1380,7 +1379,8 @@ class Mininet_wifi(Mininet):
                             sleep(1)
                     node.pos = (0, 0, 0)
                     if not isinstance(node, AP):
-                        ConfigMobLinks(node)
+                        #ConfigMobLinks(node)
+                        pass
                     # we need this cause wmediumd is struggling
                     # with some associations e.g. wpa
                     if self.wmediumd_mode == interference:
@@ -1425,8 +1425,8 @@ class Mininet_wifi(Mininet):
         "Stop the graph"
         if parseData.thread_:
             parseData.thread_._keep_alive = False
-        if mob.thread_:
-            mob.thread_._keep_alive = False
+        #if mob.thread_:
+        #    mob.thread_._keep_alive = False
         if Energy.thread_:
             Energy.thread_._keep_alive = False
             sleep(1)

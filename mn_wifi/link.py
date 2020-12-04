@@ -1405,13 +1405,13 @@ class wmediumd(object):
         self.configWmediumd(**kwargs)
 
     def configWmediumd(self, wlinks, fading_cof, noise_th, stations,
-                       aps, cars, ppm):
+                       aps, ppm):
         "Configure wmediumd"
         intfrefs = []
         isnodeaps = []
         mac_list = []
 
-        nodes = stations + aps + cars
+        nodes = stations + aps #+ cars
         for node in nodes:
             node.wmIfaces = []
             for intf in node.wintfs.values():
