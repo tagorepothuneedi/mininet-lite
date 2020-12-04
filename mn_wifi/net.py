@@ -44,7 +44,7 @@ from mn_wifi.propagationModels import PropagationModel as ppm
 VERSION = "2.5"
 
 
-class Mininet_wifi(Mininet, Mininet_IoT):
+class Mininet_wifi(Mininet):
 
     def __init__(self, accessPoint=OVSKernelAP, station=Station, car=Car,
                  sensor=LowPANNode, apsensor=OVSSensor, link=WirelessLink,
@@ -157,7 +157,7 @@ class Mininet_wifi(Mininet, Mininet_IoT):
         if self.ac_method:
             mob.ac = self.ac_method
 
-        Mininet_IoT.__init__(self, sensor=sensor, apsensor=apsensor)
+        #Mininet_IoT.__init__(self, sensor=sensor, apsensor=apsensor)
         Mininet.__init__(self, link=link, **kwargs)
 
     def socketServer(self, **kwargs):
