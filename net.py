@@ -29,25 +29,25 @@ from mn_wifi.link import ConfigWLink, wmediumd, _4address, HostapdConfig, \
     _4addrAP, phyAP
 from mn_wifi.clean import Cleanup as CleanupWifi
 from mn_wifi.energy import Energy
-from mn_wifi.telemetry import parseData, telemetry as run_telemetry
-from mn_wifi.mobility import Tracked as TrackedMob, model as MobModel, \
-    Mobility as mob, ConfigMobility, ConfigMobLinks
-from mn_wifi.plot import Plot2D, Plot3D, PlotGraph
+#from mn_wifi.telemetry import parseData, telemetry as run_telemetry
+#from mn_wifi.mobility import Tracked as TrackedMob, model as MobModel, \
+#    Mobility as mob, ConfigMobility, ConfigMobLinks
+#from mn_wifi.plot import Plot2D, Plot3D, PlotGraph
 from mn_wifi.module import Mac80211Hwsim
 from mn_wifi.propagationModels import PropagationModel as ppm
-from mn_wifi.vanet import vanet
-from mn_wifi.sixLoWPAN.net import Mininet_IoT
-from mn_wifi.sixLoWPAN.node import OVSSensor, LowPANNode
-from mn_wifi.sixLoWPAN.link import LowPANLink
-from mn_wifi.sixLoWPAN.util import ipAdd6
+#from mn_wifi.vanet import vanet
+#from mn_wifi.sixLoWPAN.net import Mininet_IoT
+#from mn_wifi.sixLoWPAN.node import OVSSensor, LowPANNode
+#from mn_wifi.sixLoWPAN.link import LowPANLink
+#from mn_wifi.sixLoWPAN.util import ipAdd6
 
 VERSION = "2.5"
 
 
-class Mininet_wifi(Mininet, Mininet_IoT):
+class Mininet_wifi(Mininet):
 
     def __init__(self, accessPoint=OVSKernelAP, station=Station, car=Car,
-                 sensor=LowPANNode, apsensor=OVSSensor, link=WirelessLink,
+                   link=WirelessLink,
                  ssid="new-ssid", mode="g", channel=1, freq=2.4, band=20,
                  wmediumd_mode=snr, roads=0, fading_cof=0, autoAssociation=True,
                  allAutoAssociation=True, autoSetPositions=False,
@@ -157,7 +157,7 @@ class Mininet_wifi(Mininet, Mininet_IoT):
         if self.ac_method:
             mob.ac = self.ac_method
 
-        Mininet_IoT.__init__(self, sensor=sensor, apsensor=apsensor)
+        #Mininet_IoT.__init__(self, sensor=sensor, apsensor=apsensor)
         Mininet.__init__(self, link=link, **kwargs)
 
     def socketServer(self, **kwargs):
@@ -1158,41 +1158,41 @@ class Mininet_wifi(Mininet, Mininet_IoT):
             info('Something went wrong with the GUI.\n')
             self.draw = False
 
-    def start_mobility(self, **kwargs):
-        "Starts Mobility"
-        for node in kwargs.get('mob_nodes'):
-            node.position, node.pos = (0, 0, 0), (0, 0, 0)
-        if self.roads:
-            vanet(**kwargs)
-        else:
-            MobModel(**kwargs)
+    #def start_mobility(self, **kwargs):
+    #    "Starts Mobility"
+    #    for node in kwargs.get('mob_nodes'):
+    #        node.position, node.pos = (0, 0, 0), (0, 0, 0)
+    #    if self.roads:
+    #        vanet(**kwargs)
+    #    else:
+    #        MobModel(**kwargs)
 
-    def setMobilityModel(self, **kwargs):
-        for key in kwargs:
-            if key == 'model':
-                self.mob_model = kwargs.get(key)
-            elif key == 'time':
-                self.mob_start_time = kwargs.get(key)
-            elif key in self.__dict__.keys():
-                setattr(self, key, kwargs.get(key))
+    #def setMobilityModel(self, **kwargs):
+    #    for key in kwargs:
+    #        if key == 'model':
+    #            self.mob_model = kwargs.get(key)
+    #        elif key == 'time':
+    #            self.mob_start_time = kwargs.get(key)
+    #        elif key in self.__dict__.keys():
+    #            setattr(self, key, kwargs.get(key))
 
-    def startMobility(self, **kwargs):
-        for key in kwargs:
-            if key == 'time':
-                self.mob_start_time = kwargs.get(key)
-            else:
-                setattr(self, key, kwargs.get(key))
+    #def startMobility(self, **kwargs):
+    #    for key in kwargs:
+    #       if key == 'time':
+    #            self.mob_start_time = kwargs.get(key)
+    #        else:
+    #            setattr(self, key, kwargs.get(key))
 
-    def stopMobility(self, **kwargs):
-        "Stops Mobility"
-        if self.allAutoAssociation and \
-                not self.configWiFiDirect and not self.config4addr:
-            self.auto_association()
-        for key in kwargs:
-            if key == 'time':
-                self.mob_stop_time = kwargs.get(key)
-            else:
-                setattr(self, key, kwargs.get(key))
+    #def stopMobility(self, **kwargs):
+    #    "Stops Mobility"
+    #    if self.allAutoAssociation and \
+    #            not self.configWiFiDirect and not self.config4addr:
+    #        self.auto_association()
+    #    for key in kwargs:
+    #        if key == 'time':
+    #            self.mob_stop_time = kwargs.get(key)
+    #        else:
+    #            setattr(self, key, kwargs.get(key))
 
     def get_mobility_params(self):
         "Set Mobility Parameters"
