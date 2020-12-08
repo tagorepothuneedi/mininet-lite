@@ -13,7 +13,7 @@ import glob
 
 from mininet.log import info
 from mininet.util import decode
-from mn_wifi.sixLoWPAN.clean import Cleanup as CleanLowpan
+#from mn_wifi.sixLoWPAN.clean import Cleanup as CleanLowpan
 from mn_wifi.wmediumdConnector import w_server
 
 
@@ -109,7 +109,7 @@ class Cleanup(object):
             info('\n*** Done\n')
             cls.sh('fuser -k %s/tcp >/dev/null 2>&1' % cls.socket_port)
 
-        CleanLowpan.cleanup_6lowpan()
+        #CleanLowpan.cleanup_6lowpan()
 
     @classmethod
     def cleanup_wifi(cls):
