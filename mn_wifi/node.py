@@ -208,60 +208,60 @@ class Node_wifi(Node):
             self.set_pos_wmediumd(self.position)
         self.configLinks()
 
-    def get_circle_color(self):
-        if 'color' in self.params:
-            color = self.params['color']
-        else:
-            color = 'b'
-            if isinstance(self, Station):
-                color = 'g'
-            elif isinstance(self, Car):
-                color = 'r'
-        return color
+    #def get_circle_color(self):
+    #    if 'color' in self.params:
+    #        color = self.params['color']
+    #    else:
+    #        color = 'b'
+    #        if isinstance(self, Station):
+    #            color = 'g'
+    #        elif isinstance(self, Car):
+    #            color = 'r'
+    #    return color
 
-    def updateLine(self):
-        pos = [self.position[0], self.position[1]]
-        if hasattr(self, 'lines'):
-            for line in self.lines:
-                for n in range(len(line)):
-                    if '-' == line[n]: node = line[:n]
-                pos_ = self.lines[line].get_data()
-                if self.name == node:
-                    self.lines[line].set_data([pos[0], pos_[0][1]], [pos[1], pos_[1][1]])
-                else:
-                    self.lines[line].set_data([pos_[0][0], pos[0]], [pos_[1][0], pos[1]])
+    #def updateLine(self):
+    #    pos = [self.position[0], self.position[1]]
+    #    if hasattr(self, 'lines'):
+    #        for line in self.lines:
+    #            for n in range(len(line)):
+    #                if '-' == line[n]: node = line[:n]
+    #            pos_ = self.lines[line].get_data()
+    #            if self.name == node:
+    #                self.lines[line].set_data([pos[0], pos_[0][1]], [pos[1], pos_[1][1]])
+    #            else:
+    #                self.lines[line].set_data([pos_[0][0], pos[0]], [pos_[1][0], pos[1]])
 
     def getxyz(self):
         pos = self.position
         x, y, z = round(pos[0], 2), round(pos[1], 2), round(pos[2], 2)
         return x, y, z
 
-    def update_3d(self):
-        from mn_wifi.plot import Plot3D
-        self.plt_node.remove()
-        self.circle.remove()
-        self.plttxt.remove()
-        Plot3D.instantiate_attrs(self)
+    #def update_3d(self):
+    #    from mn_wifi.plot import Plot3D
+    #    self.plt_node.remove()
+    #    self.circle.remove()
+    #    self.plttxt.remove()
+    #    Plot3D.instantiate_attrs(self)
 
-    def update_2d(self):
-        x, y, z = self.getxyz()
-        self.set_text_pos(x, y)
-        self.plt_node.set_data(x, y)
-        self.circle.center = x, y
+    #def update_2d(self):
+    #    x, y, z = self.getxyz()
+    #    self.set_text_pos(x, y)
+    #    self.plt_node.set_data(x, y)
+    #    self.circle.center = x, y
         # Enable the update of the wired links when the nodes have mobility
-        self.updateLine()
+    #    self.updateLine()
 
-    def get_max_radius(self):
-        range_list = []
-        for n in self.wintfs.values():
-            range_list.append(n.range)
-        return max(range_list)
+    #def get_max_radius(self):
+    #   range_list = []
+    #    for n in self.wintfs.values():
+    #        range_list.append(n.range)
+    #    return max(range_list)
 
-    def update_graph(self):
-        if plt.fignum_exists(1):
-            self.set_circle_radius()
-            self.updateLine()
-            self.update_2d()
+    #def update_graph(self):
+    #    if plt.fignum_exists(1):
+    #        self.set_circle_radius()
+    #        self.updateLine()
+    #        self.update_2d()
 
     def get_distance_to(self, dst):
         """Get the distance between two nodes
@@ -432,9 +432,9 @@ class Station(Node_wifi):
     pass
 
 
-class Car(Node_wifi):
-    "A car is simply a Node"
-    pass
+#class Car(Node_wifi):
+#    "A car is simply a Node"
+#    pass
 
 
 class CPULimitedStation( Station, CPULimitedHost ):

@@ -20,7 +20,7 @@ from mininet.link import Link, TCLink, TCULink
 #from mininet.nodelib import NAT
 from mininet.log import info, error, debug, output, warn
 
-from mn_wifi.node import AP, Station,Car, \
+from mn_wifi.node import AP, Station, \
     OVSKernelAP, physicalAP
 from mn_wifi.wmediumdConnector import error_prob, snr, interference
 from mn_wifi.link import ConfigWLink, wmediumd, _4address, HostapdConfig, \
@@ -29,17 +29,8 @@ from mn_wifi.link import ConfigWLink, wmediumd, _4address, HostapdConfig, \
     _4addrAP, phyAP
 from mn_wifi.clean import Cleanup as CleanupWifi
 from mn_wifi.energy import Energy
-#from mn_wifi.telemetry import parseData#, telemetry as run_telemetry
-#from mn_wifi.mobility import Tracked as TrackedMob, model as MobModel, \
-#    Mobility as mob, ConfigMobility, ConfigMobLinks
-#from mn_wifi.plot import Plot2D, Plot3D, PlotGraph
 from mn_wifi.module import Mac80211Hwsim
 from mn_wifi.propagationModels import PropagationModel as ppm
-#from mn_wifi.vanet import vanet
-#from mn_wifi.sixLoWPAN.net import Mininet_IoT
-#from mn_wifi.sixLoWPAN.node import OVSSensor, LowPANNode
-#from mn_wifi.sixLoWPAN.link import LowPANLink
-#from mn_wifi.sixLoWPAN.util import ipAdd6
 
 VERSION = "2.5"
 
@@ -1204,22 +1195,22 @@ class Mininet_wifi(Mininet):
         nodes = self.aps + self.stations 
         for node in nodes:
             if hasattr(node, 'position'):
-                if isinstance(node,Car) and node.position == (0, 0, 0): #, Car
+                #if isinstance(node,Car) and node.position == (0, 0, 0): #, Car
+                #    pass
+                #else:
+                for intf in node.wintfs.values():
+                    if isinstance(intf, adhoc):
+                        info('%s ' % node)
+                        sleep(1)
+                node.pos = (0, 0, 0)
+                if not isinstance(node, AP):
+                    #ConfigMobLinks(node)
                     pass
-                else:
-                    for intf in node.wintfs.values():
-                        if isinstance(intf, adhoc):
-                            info('%s ' % node)
-                            sleep(1)
-                    node.pos = (0, 0, 0)
-                    if not isinstance(node, AP):
-                        #ConfigMobLinks(node)
-                        pass
-                    # we need this cause wmediumd is struggling
-                    # with some associations e.g. wpa
-                    if self.wmediumd_mode == interference:
-                        self.wmediumd_workaround(node)
-                        self.wmediumd_workaround(node, -1)
+                # we need this cause wmediumd is struggling
+                # with some associations e.g. wpa
+                if self.wmediumd_mode == interference:
+                    self.wmediumd_workaround(node)
+                    self.wmediumd_workaround(node, -1)
 
         self.restore_links()
 

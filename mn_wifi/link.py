@@ -14,7 +14,7 @@ from subprocess import check_output as co, CalledProcessError
 from mn_wifi.devices import DeviceRate
 from mininet.link import Intf, TCIntf, Link
 from mininet.log import error, debug, info
-from mn_wifi.manetRoutingProtocols import manetProtocols
+#from mn_wifi.manetRoutingProtocols import manetProtocols
 from mn_wifi.propagationModels import SetSignalRange, GetPowerGivenRange
 from mn_wifi.wmediumdConnector import DynamicIntfRef, \
     WStarter, SNRLink, w_pos, w_cst, w_server, ERRPROBLink, \
@@ -1616,7 +1616,7 @@ class ITSLink(LinkAttrs):
         intf.setTxPower(self.txpower)
         self.configure_ocb()
 
-        if self.proto: manetProtocols(self, proto_args)
+        #if self.proto: manetProtocols(self, proto_args)
 
         # All we are is dust in the wind, and our two interfaces
         self.intf1, self.intf2 = intf1, intf2
@@ -1775,7 +1775,7 @@ class adhoc(LinkAttrs):
 
         self.setTxPower(self.txpower)
 
-        if self.proto: manetProtocols(self, proto_args)
+        #if self.proto: manetProtocols(self, proto_args)
 
         # All we are is dust in the wind, and our two interfaces
         self.intf1, self.intf2 = intf1, intf2
@@ -1862,7 +1862,7 @@ class mesh(LinkAttrs):
         self.setMeshIface(wlan, iface)
         self.configureMesh()
 
-        if self.proto: manetProtocols(self, proto_args)
+        #if self.proto: manetProtocols(self, proto_args)
 
         # All we are is dust in the wind, and our two interfaces
         self.intf1, self.intf2 = intf1, intf2
