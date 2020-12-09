@@ -163,18 +163,18 @@ function mn_deps {
     fi
 
     echo "Installing Mininet core"
-    pushd $MININET_DIR/mininet-wifi
+    pushd $MININET_DIR/mininet-lite
     if [ -d mininet ]; then
       echo "Removing mininet dir..."
       rm -r mininet
     fi
 
     sudo git clone --depth=1 https://github.com/mininet/mininet.git
-    pushd $MININET_DIR/mininet-wifi/mininet
+    pushd $MININET_DIR/mininet-lite/mininet
     sudo python=${python} make install
     popd
     echo "Installing Mininet-wifi core"
-    pushd $MININET_DIR/mininet-wifi
+    pushd $MININET_DIR/mininet-lite
     sudo python=${python} make install
     popd
 }
@@ -226,37 +226,37 @@ function wifi_deps {
         fi
     fi
 
-    pushd $MININET_DIR/mininet-wifi
+    pushd $MININET_DIR/mininet-lite
     git submodule update --init --recursive
-    pushd $MININET_DIR/mininet-wifi/hostap
-    if [ "$DIST" = "Ubuntu" ] && [ "$RELEASE" =  "14.04" ]; then
-        git reset --hard 2c129a1
-        patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config-1404.patch
-    else
-        patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config.patch
-    fi
-    pushd $MININET_DIR/mininet-wifi/hostap/hostapd
-    cp defconfig .config
-    sudo make && make install
-    pushd $MININET_DIR/mininet-wifi/hostap/wpa_supplicant
-    cp defconfig .config
-    sudo make && make install
-    pushd $MININET_DIR/mininet-wifi/
-    if [ -d iw ]; then
-      echo "Removing iw..."
-      rm -r iw
-    fi
-    git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git
-    pushd $MININET_DIR/mininet-wifi/iw
-    sudo make && make install
-    cd $BUILD_DIR
-    if [ -d mac80211_hwsim_mgmt ]; then
-      echo "Removing mac80211_hwsim_mgmt..."
-      rm -r mac80211_hwsim_mgmt
-    fi
-    git clone --depth=1 https://github.com/ramonfontes/mac80211_hwsim_mgmt.git
-    pushd $BUILD_DIR/mac80211_hwsim_mgmt
-    sudo make install
+    #pushd $MININET_DIR/mininet-wifi/hostap
+    #if [ "$DIST" = "Ubuntu" ] && [ "$RELEASE" =  "14.04" ]; then
+    #    git reset --hard 2c129a1
+    #    patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config-1404.patch
+    #else
+    #    patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config.patch
+    #fi
+    #pushd $MININET_DIR/mininet-wifi/hostap/hostapd
+    #cp defconfig .config
+    #sudo make && make install
+    #pushd $MININET_DIR/mininet-wifi/hostap/wpa_supplicant
+    #cp defconfig .config
+    #sudo make && make install
+    #pushd $MININET_DIR/mininet-wifi/
+    #if [ -d iw ]; then
+    #  echo "Removing iw..."
+    #  rm -r iw
+    #fi
+    #git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git
+    #pushd $MININET_DIR/mininet-wifi/iw
+    #sudo make && make install
+    #cd $BUILD_DIR
+    #if [ -d mac80211_hwsim_mgmt ]; then
+    #  echo "Removing mac80211_hwsim_mgmt..."
+    #  rm -r mac80211_hwsim_mgmt
+    #fi
+    #git clone --depth=1 https://github.com/ramonfontes/mac80211_hwsim_mgmt.git
+    #pushd $BUILD_DIR/mac80211_hwsim_mgmt
+    #sudo make install
 }
 
 function babeld {
