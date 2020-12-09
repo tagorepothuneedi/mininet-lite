@@ -226,14 +226,14 @@ function wifi_deps {
         fi
     fi
 
-    pushd $MININET_DIR/mininet-lite
+    pushd $MININET_DIR/mininet-wifi
     git submodule update --init --recursive
-    pushd $MININET_DIR/mininet-lite/hostap
+    pushd $MININET_DIR/mininet-wifi/hostap
     if [ "$DIST" = "Ubuntu" ] && [ "$RELEASE" =  "14.04" ]; then
         git reset --hard 2c129a1
         patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config-1404.patch
     else
-        patch -p0 < $MININET_DIR/mininet-lite/util/hostap-patches/config.patch
+        patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config.patch
     fi
     pushd $MININET_DIR/mininet-wifi/hostap/hostapd
     cp defconfig .config
@@ -351,7 +351,7 @@ function of {
     cd $BUILD_DIR/openflow
 
     # Patch controller to handle more than 16 switches
-    patch -p1 < $MININET_DIR/mininet-lite/util/openflow-patches/controller.patch
+    patch -p1 < $MININET_DIR/mininet-wifi/util/openflow-patches/controller.patch
 
     # Resume the install:
     ./boot.sh
