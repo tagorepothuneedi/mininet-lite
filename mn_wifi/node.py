@@ -131,8 +131,9 @@ class Node_wifi(Node):
 
     def configLinks(self):
         "Applies channel params and handover"
-        from mn_wifi.mobility import ConfigMobLinks
-        ConfigMobLinks(self)
+        #from mn_wifi.mobility import ConfigMobLinks
+        #ConfigMobLinks(self)
+        pass
 
     def configIFB(self, wlan, ifbID):
         "Support to Intermediate Functional Block (IFB) Devices"
