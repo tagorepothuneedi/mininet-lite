@@ -163,18 +163,18 @@ function mn_deps {
     fi
 
     echo "Installing Mininet core"
-    pushd $MININET_DIR/mininet-wifi
+    pushd $MININET_DIR/mininet-lite
     if [ -d mininet ]; then
       echo "Removing mininet dir..."
       rm -r mininet
     fi
 
     sudo git clone --depth=1 https://github.com/mininet/mininet.git
-    pushd $MININET_DIR/mininet-wifi/mininet
+    pushd $MININET_DIR/mininet-lite/mininet
     sudo python=${python} make install
     popd
     echo "Installing Mininet-wifi core"
-    pushd $MININET_DIR/mininet-wifi
+    pushd $MININET_DIR/mininet-lite
     sudo python=${python} make install
     popd
 }
@@ -182,21 +182,21 @@ function mn_deps {
 # Install P4 deps
 function p4_deps {
     echo "Installing P4 dependencies"
-    pushd $BUILD_DIR/mininet-wifi/
+    pushd $BUILD_DIR/mininet-lite/
     P4_DIR="p4-dependencies"
     [[ -d $P4_DIR ]] && echo $P4_DIR already exists, aborting && exit
     mkdir $P4_DIR
-    pushd $BUILD_DIR/mininet-wifi/p4-dependencies
+    pushd $BUILD_DIR/mininet-lite/p4-dependencies
     git clone https://github.com/jafingerhut/p4-guide
-    pushd $BUILD_DIR/mininet-wifi/p4-dependencies/p4-guide
+    pushd $BUILD_DIR/mininet-lite/p4-dependencies/p4-guide
 
     if [ "$DIST" = "Ubuntu" ] && [ "$RELEASE" = "20.04" ]; then
         git reset --hard 1fa500a
-        patch -p0 < $MININET_DIR/mininet-wifi/util/p4-patches/p4-guide-v3-without-mininet.patch
+        patch -p0 < $MININET_DIR/mininet-lite/util/p4-patches/p4-guide-v3-without-mininet.patch
         sudo ./bin/install-p4dev-v3.sh |& tee log.txt
     else
         git reset --hard ef0f4e1
-        patch -p0 < $MININET_DIR/mininet-wifi/util/p4-patches/p4-guide-without-mininet.patch
+        patch -p0 < $MININET_DIR/mininet-lite/util/p4-patches/p4-guide-without-mininet.patch
         sudo ./bin/install-p4dev-v2.sh |& tee log.txt
     fi
 }
@@ -228,26 +228,26 @@ function wifi_deps {
 
     pushd $MININET_DIR/mininet-lite
     git submodule update --init --recursive
-    pushd $MININET_DIR/mininet-wifi/hostap
+    pushd $MININET_DIR/mininet-lite/hostap
     if [ "$DIST" = "Ubuntu" ] && [ "$RELEASE" =  "14.04" ]; then
         git reset --hard 2c129a1
-        patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config-1404.patch
+        patch -p0 < $MININET_DIR/mininet-lite/util/hostap-patches/config-1404.patch
     else
-        patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config.patch
+        patch -p0 < $MININET_DIR/mininet-lite/util/hostap-patches/config.patch
     fi
-    pushd $MININET_DIR/mininet-wifi/hostap/hostapd
+    pushd $MININET_DIR/mininet-lite/hostap/hostapd
     cp defconfig .config
     sudo make && make install
-    pushd $MININET_DIR/mininet-wifi/hostap/wpa_supplicant
+    pushd $MININET_DIR/mininet-lite/hostap/wpa_supplicant
     cp defconfig .config
     sudo make && make install
-    pushd $MININET_DIR/mininet-wifi/
+    pushd $MININET_DIR/mininet-lite/
     if [ -d iw ]; then
       echo "Removing iw..."
       rm -r iw
     fi
     git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git
-    pushd $MININET_DIR/mininet-wifi/iw
+    pushd $MININET_DIR/mininet-lite/iw
     sudo make && make install
     cd $BUILD_DIR
     if [ -d mac80211_hwsim_mgmt ]; then
@@ -262,13 +262,13 @@ function wifi_deps {
 function babeld {
     echo "Installing babeld..."
 
-    cd $BUILD_DIR/mininet-wifi
+    cd $BUILD_DIR/mininet-lite
     if [ -d babeld ]; then
           echo "Removing babeld..."
           rm -r babeld
         fi
     git clone --depth=1 https://github.com/jech/babeld
-    cd $BUILD_DIR/mininet-wifi/babeld
+    cd $BUILD_DIR/mininet-lite/babeld
     make
     sudo make install
 }
@@ -277,13 +277,13 @@ function olsrd {
     echo "Installing olsrd..."
     $install bison flex
     
-    cd $BUILD_DIR/mininet-wifi
+    cd $BUILD_DIR/mininet-lite
     if [ -d olsrd ]; then
           echo "Removing olsrd..."
           rm -r olsrd
         fi
     git clone --depth=1 https://github.com/OLSR/olsrd
-    cd $BUILD_DIR/mininet-wifi/olsrd
+    cd $BUILD_DIR/mininet-lite/olsrd
     make
     sudo make install
 }
@@ -291,7 +291,7 @@ function olsrd {
 function batman {
     echo "Installing B.A.T.M.A.N..."
     echo "Installing batmand..."
-    cd $BUILD_DIR/mininet-wifi
+    cd $BUILD_DIR/mininet-lite
     if [ -d batmand ]; then
           echo "Removing batmand..."
           rm -r batmand
@@ -302,7 +302,7 @@ function batman {
     sudo make install
 
     echo "Installing batman-adv..."
-    cd $BUILD_DIR/mininet-wifi
+    cd $BUILD_DIR/mininet-lite
     if [ -d batman-adv ]; then
           echo "Removing batman-adv..."
           rm -r batman-adv
@@ -313,7 +313,7 @@ function batman {
     sudo make install
 
     echo "Installing batctl..."
-    cd $BUILD_DIR/mininet-wifi
+    cd $BUILD_DIR/mininet-lite
     if [ -d batctl ]; then
           echo "Removing batctl..."
           rm -r batctl
@@ -414,7 +414,7 @@ function install_wireshark {
     # Copy coloring rules: OF is white-on-blue:
     echo "Optionally installing wireshark color filters"
     mkdir -p $HOME/.wireshark
-    cp -n $MININET_DIR/mininet-wifi/util/colorfilters $HOME/.wireshark
+    cp -n $MININET_DIR/mininet-lite/util/colorfilters $HOME/.wireshark
 
     echo "Checking Wireshark version"
     WSVER=`wireshark -v | egrep -o '[0-9\.]+' | head -1`
@@ -651,9 +651,9 @@ function nox {
 
     # Apply patches
     git checkout -b tutorial-destiny
-    git am $MININET_DIR/mininet-wifi/util/nox-patches/*tutorial-port-nox-destiny*.patch
+    git am $MININET_DIR/mininet-lite/util/nox-patches/*tutorial-port-nox-destiny*.patch
     if [ "$DIST" = "Ubuntu" ] && version_ge $RELEASE 12.04; then
-        git am $MININET_DIR/mininet-wifi/util/nox-patches/*nox-ubuntu12-hacks.patch
+        git am $MININET_DIR/mininet-lite/util/nox-patches/*nox-ubuntu12-hacks.patch
     fi
 
     # Build
@@ -847,7 +847,7 @@ function wmediumd {
       rm -r wmediumd
     fi
     $install git make libevent-dev libconfig-dev libnl-3-dev libnl-genl-3-dev
-    git clone --depth=1 -b mininet-wifi https://github.com/ramonfontes/wmediumd.git
+    git clone --depth=1 -b mininet-lite https://github.com/ramonfontes/wmediumd.git
     pushd $BUILD_DIR/wmediumd
     sudo make install
     popd
@@ -903,7 +903,7 @@ function all {
     olsrd
     batman
     wpan_tools
-    echo "Enjoy Mininet-WiFi!"
+    echo "Enjoy mininet-lite!"
 }
 
 # Restore disk space and remove sensitive files before shipping a VM.
