@@ -556,9 +556,9 @@ function ovs {
         if sudo service $OVSC stop; then
             echo "Stopped running controller"
         fi
-        if [ -e /etc/init.d/$OVSC ]; then
-            sudo update-rc.d $OVSC disable
-        fi
+        #if [ -e /etc/init.d/$OVSC ]; then
+        #    sudo update-rc.d $OVSC disable
+        #fi
     fi
 }
 
