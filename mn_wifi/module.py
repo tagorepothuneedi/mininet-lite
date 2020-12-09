@@ -53,7 +53,7 @@ class Mac80211Hwsim(object):
         self.load_module(nradios, nodes, alt_module, **params)  # loads wifi module
         cmd = 'find /sys/kernel/debug/ieee80211 -name hwsim | grep %05d | cut -d/ -f 6 | sort' % os.getpid()  # grep on PID in devicelist
         phys = self.get_intf_list(cmd)  # gets virtual and phy interfaces
-        print("Interface created:"+phys)
+        print("Interface created:f{phys}")
         wlan_list = self.get_wlan_list(phys, **params)  # gets wlan list
         for node in nodes:
             self.assign_iface(node, phys, wlan_list, **params)
