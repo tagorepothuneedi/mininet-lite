@@ -226,7 +226,7 @@ function wifi_deps {
         fi
     fi
 
-    pushd $MININET_DIR/mininet-wifi
+    pushd $MININET_DIR/mininet-lite
     git submodule update --init --recursive
     pushd $MININET_DIR/mininet-wifi/hostap
     if [ "$DIST" = "Ubuntu" ] && [ "$RELEASE" =  "14.04" ]; then
