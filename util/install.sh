@@ -233,7 +233,7 @@ function wifi_deps {
         git reset --hard 2c129a1
         patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config-1404.patch
     else
-        patch -p0 < $MININET_DIR/mininet-wifi/util/hostap-patches/config.patch
+        patch -p0 < $MININET_DIR/mininet-lite/util/hostap-patches/config.patch
     fi
     pushd $MININET_DIR/mininet-wifi/hostap/hostapd
     cp defconfig .config
