@@ -242,21 +242,21 @@ function wifi_deps {
     #cp defconfig .config
     #sudo make && make install
     #pushd $MININET_DIR/mininet-wifi/
-    #if [ -d iw ]; then
-    #  echo "Removing iw..."
-    #  rm -r iw
-    #fi
-    #git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git
-    #pushd $MININET_DIR/mininet-wifi/iw
-    #sudo make && make install
-    #cd $BUILD_DIR
-    #if [ -d mac80211_hwsim_mgmt ]; then
-    #  echo "Removing mac80211_hwsim_mgmt..."
-    #  rm -r mac80211_hwsim_mgmt
-    #fi
-    #git clone --depth=1 https://github.com/ramonfontes/mac80211_hwsim_mgmt.git
-    #pushd $BUILD_DIR/mac80211_hwsim_mgmt
-    #sudo make install
+    if [ -d iw ]; then
+      echo "Removing iw..."
+      rm -r iw
+    fi
+    git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git
+    pushd $MININET_DIR/mininet-lite/iw
+    sudo make && make install
+    cd $BUILD_DIR
+    if [ -d mac80211_hwsim_mgmt ]; then
+      echo "Removing mac80211_hwsim_mgmt..."
+      rm -r mac80211_hwsim_mgmt
+    fi
+    git clone --depth=1 https://github.com/ramonfontes/mac80211_hwsim_mgmt.git
+    pushd $BUILD_DIR/mac80211_hwsim_mgmt
+    sudo make install
 }
 
 function babeld {
@@ -556,9 +556,9 @@ function ovs {
         if sudo service $OVSC stop; then
             echo "Stopped running controller"
         fi
-        #if [ -e /etc/init.d/$OVSC ]; then
-        #    sudo update-rc.d $OVSC disable
-        #fi
+        if [ -e /etc/init.d/$OVSC ]; then
+            sudo update-rc.d $OVSC disable
+        fi
     fi
 }
 
